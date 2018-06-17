@@ -3,7 +3,7 @@ pipeline {
         label 'master'
     }
     environment {
-       VERSION = '1' 
+       VERSION = '1.0.1' 
     }
     stages {
         stage('Print Version') {
