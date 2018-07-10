@@ -1,4 +1,5 @@
-def userInput = ""
+def userInput1 = ""
+def userInput2 = ""
 
 pipeline {
     agent {
@@ -19,14 +20,26 @@ pipeline {
                 script {
                     try {
                         timeout (time: 15, unit: 'MINUTES') {
-                            userInput = input message: 'Which opertion do you want to apply', ok: 'Proceed', id: 'testUserInput',
+                            userInput = input message: 'Which option do you want to choose', ok: 'Proceed', id: 'TestUserInput1',
                             parameters: [
-                                choice(name: 'operationType', choices: 'deploy\ndestroy', description: 'Deploy or destroy?')
+                                choice(name: 'userInput1', choices: 'choice1-1\nchoice1-2\nchoice1-3', description: '1, 2, or 3')
                             ]
                         }
-                        echo "User input: ${userInput}"
+                        echo "User input 1: ${userInput}"
                     } catch (err) {
-                        echo "Didn't obtain user input before timeout!"
+                        echo "Didn't obtain user input 1 before timeout!"
+                    }
+
+                    try {
+                        timeout (time: 15, unit: 'MINUTES') {
+                            userInput = input message: 'Which option do you want to choose', ok: 'Proceed', id: 'TestUserInput2',
+                            parameters: [
+                                choice(name: 'userInput2', choices: 'choice2-1\nchoice2-2\nchoice2-3', description: '1, 2 or 3')
+                            ]
+                        }
+                        echo "User input 2: ${userInput}"
+                    } catch (err) {
+                        echo "Didn't obtain user input 2 before timeout!"
                     }
                 }
             }
