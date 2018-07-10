@@ -18,8 +18,8 @@ pipeline {
             steps {
                 script {
                     try {
-                        timeout (time: 15, unit: "MINUTES") {
-                            userInput = input message: 'Which opertion do you want to apply', ok: 'Proceed', id: testUserInput,
+                        timeout (time: 15, unit: 'MINUTES') {
+                            userInput = input message: 'Which opertion do you want to apply', ok: 'Proceed', id: 'testUserInput',
                             parameters: [
                                 choice(name: 'operationType', choices: 'deploy\ndestroy', description: 'Deploy or destroy?')
                             ]
