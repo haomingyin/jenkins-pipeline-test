@@ -1,3 +1,5 @@
+def userInput = ""
+
 pipeline {
     agent {
         label 'master'
@@ -9,6 +11,24 @@ pipeline {
         stage('Print Version') {
             steps {
                 echo "Jenkinsfile version: ${env.VERSION}"
+            }
+        }
+
+        stage('User Input') {
+            steps {
+                script {
+                    try {
+                        timeout (time: 15, unit: "MINUTES") {
+                            userInput = input message: 'Which opertion do you want to apply', ok: 'Proceed', id: testUserInput,
+                            parameters: [
+                                choice(name: 'operationType', choices: 'deploy\ndestroy', description: 'Deploy or destroy?')
+                            ]
+                        }
+                        echo "User input: ${userInput}"
+                    } catch (err) {
+                        echo "Didn't obtain user input before timeout!"
+                    }
+                }
             }
         }
         
