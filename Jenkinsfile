@@ -1,5 +1,6 @@
 def userInput1 = ""
 def userInput2 = ""
+def submitter = ""
 
 pipeline {
     agent {
@@ -20,12 +21,13 @@ pipeline {
                 script {
                     try {
                         timeout (time: 15, unit: 'MINUTES') {
-                            userInput = input message: 'Which option do you want to choose', ok: 'Proceed', id: 'TestUserInput1',
+                            userInput = input message: 'Which option do you want to choose', ok: 'Proceed', id: 'TestUserInput1', submitterParameter: 'submitter',
                             parameters: [
                                 choice(name: 'userInput1', choices: 'choice1-1\nchoice1-2\nchoice1-3', description: '1, 2, or 3')
                             ]
                         }
                         echo "User input 1: ${userInput}"
+                        echo "User input 1 submitter: ${submitter}"
                     } catch (err) {
                         echo "Didn't obtain user input 1 before timeout!"
                     }
@@ -34,7 +36,9 @@ pipeline {
                         timeout (time: 15, unit: 'MINUTES') {
                             userInput = input message: 'Which option do you want to choose', ok: 'Proceed', id: 'TestUserInput2',
                             parameters: [
-                                choice(name: 'userInput2', choices: 'choice2-1\nchoice2-2\nchoice2-3', description: '1, 2 or 3')
+                                choice(name: 'userInput2', choices: 'choice2-1\nchoice2-2\nchoice2-3', description: '1, 2 or 3'),
+                                booleanParam(name: 'userInput3', description: 'Are you happy or not'),
+                                text(name: 'userInput4', description: 'Please enter some random things')
                             ]
                         }
                         echo "User input 2: ${userInput}"
