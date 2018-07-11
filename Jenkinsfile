@@ -1,6 +1,5 @@
 def userInput1 = ""
 def userInput2 = ""
-def submitter = ""
 
 pipeline {
     agent {
@@ -27,7 +26,7 @@ pipeline {
                             ]
                         }
                         echo "User input 1: ${userInput}"
-                        echo "User input 1 submitter: ${submitter}"
+                        echo "User input 1 submitter: ${userInput.submitter}"
                     } catch (err) {
                         echo "Didn't obtain user input 1 before timeout!"
                     }
