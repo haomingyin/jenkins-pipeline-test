@@ -19,6 +19,19 @@ pipeline {
             steps {
                 script {
                     try {
+                        timeout (time: 15, unit: 'MINUTES') { 
+                            userInput = hubotApprove message: 'Make a choice ;)', tokens: "BUILD_NUMBER,BUILD_ID", submitterParameter: "submiiter", ok: "Confirm", id: "HubotInput1",
+                            parameters: [
+                                    choice(name: 'hubotInput1', choices: 'choice1-1\nchoice1-2\nchoice1-3', description: '1, 2, or 3')
+                                ]  
+                        }
+                        echo "Hubot input 1: ${userInput}"
+                        echo "Hubot input 1 submitter: ${userInput.submitter}"
+                    } catch (err) {
+                        echo "Didn't obtain hubot input 1 before timeout!"
+                    }
+
+                    try {
                         timeout (time: 15, unit: 'MINUTES') {
                             userInput = input message: 'Which option do you want to choose', ok: 'Proceed', id: 'TestUserInput1', submitterParameter: 'submitter',
                             parameters: [
