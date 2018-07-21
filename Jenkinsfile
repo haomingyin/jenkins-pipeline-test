@@ -6,7 +6,8 @@ pipeline {
         label 'master'
     }
     environment {
-       VERSION = '1.0.3' 
+       VERSION = '1.0.3'
+       HUBOT_DEFAULT_ROOM = 'jenkins'
     }
     stages {
         stage('Print Version') {
@@ -18,6 +19,9 @@ pipeline {
         stage('User Input') {
             steps {
                 script {
+
+                    hubotSend message: "Be ready to enter inputs!" 
+
                     try {
                         timeout (time: 15, unit: 'MINUTES') { 
                             userInput = hubotApprove message: 'Make a choice ;)', tokens: "BUILD_NUMBER,BUILD_ID", submitterParameter: "submiiter", ok: "Confirm", id: "HubotInput1",
