@@ -32,7 +32,6 @@ pipeline {
                         echo "Hubot input 1: ${userInput}"
                         echo "Hubot input 1 submitter: ${userInput.submitter}"
                     } catch (err) {
-                        echo err
                         echo "Didn't obtain hubot input 1 before timeout!"
                     }
 
@@ -46,7 +45,6 @@ pipeline {
                         echo "User input 2: ${userInput}"
                         echo "User input 2 submitter: ${userInput.submitter}"
                     } catch (err) {
-                        echo err
                         echo "Didn't obtain user input 2 before timeout!"
                     }
                 }
