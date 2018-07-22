@@ -1,5 +1,5 @@
-def userInput1 = ""
-def userInput2 = ""
+def inputEnv = ""
+def inputOperation = ""
 
 pipeline {
     agent {
@@ -20,30 +20,38 @@ pipeline {
             steps {
                 script {
 
-                    hubotSend message: "Be ready to enter inputs!" 
-
                     try {
                         timeout (time: 15, unit: 'MINUTES') { 
-                            userInput = hubotApprove message: 'Make a choice ;)', ok: "Confirm", id: "HubotInput1",
+                            inputEnv = hubotApprove message: 'Which environment do you want to apply to?', ok: "Proceed", id: "input-env", submitterParameter: 'submitter',
                             parameters: [
-                                    choice(name: 'hubotInput1', choices: 'choice1-1\nchoice1-2\nchoice1-3', description: '1, 2, or 3')
+                                    choice(name: 'inputEnv', choices: 'test\nuat\nprod\nAbort', description: "'test', 'uat' or 'prod'")
                                 ]  
                         }
-                        echo "Hubot input 1: ${userInput}"
+                        echo "inputEnv: ${inputEnv.inputEnv}"
                     } catch (err) {
-                        echo "Didn't obtain hubot input 1 before timeout!"
+                        echo "Didn't obtain hubot inputEnv before timeout!"
+                    }
+
+                    if (inputEnv == 'Abort') {
+                        currentBuild.result = 'ABORTED'
+                        error("Build has been aborted by @${inputEnv.submitter}")
                     }
 
                     try {
                         timeout (time: 15, unit: 'MINUTES') {
-                            userInput = hubotApprove message: 'Which option do you want to choose', ok: 'Proceed', id: 'TestUserInput1',
+                            inputOperation = hubotApprove message: 'Do you want to deploy or destroy a stack?', ok: 'Proceed', id: 'input-operation', submitterParameter: 'submitter',
                             parameters: [
-                                choice(name: 'userInput1', choices: 'choice2-1\nchoice2-2\nchoice2-3', description: '1, 2, or 3')
+                                choice(name: 'inputOperation', choices: 'Deploy\nDestroy\nAbort', description: 'deploy a new stack, or destroy an existed stack')
                             ]
                         }
-                        echo "User input 2: ${userInput}"
+                        echo "inputOperation: ${inputOperation.inputOperation}"
                     } catch (err) {
-                        echo "Didn't obtain user input 2 before timeout!"
+                        echo "Didn't obtain user inputOperation before timeout!"
+                    }
+
+                    if (inputEnv == 'Abort') {
+                        currentBuild.result = 'ABORTED'
+                        error("Build has been aborted by @${inputOperation.submitter}")
                     }
                 }
             }
@@ -64,6 +72,24 @@ pipeline {
         stage('User') {
             steps {
                 sh "whoami"
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                hubotSend message: "Build finished successfully!" 
+            }
+        }
+        aborted {
+            script {
+                hubotSend message: "Build has been aborted."
+            }
+        }
+        failed {
+            script {
+                hubotSend message: "Build failed."
             }
         }
     }
