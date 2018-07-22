@@ -87,7 +87,7 @@ pipeline {
                 hubotSend message: "Build has been aborted."
             }
         }
-        failed {
+        failure {
             script {
                 hubotSend message: "Build failed."
             }
