@@ -32,7 +32,7 @@ pipeline {
                         echo "Didn't obtain hubot inputEnv before timeout!"
                     }
 
-                    if (inputEnv == 'Abort') {
+                    if (inputEnv.inputEnv == 'Abort') {
                         currentBuild.result = 'ABORTED'
                         error("Build has been aborted by @${inputEnv.submitter}")
                     }
@@ -49,7 +49,7 @@ pipeline {
                         echo "Didn't obtain user inputOperation before timeout!"
                     }
 
-                    if (inputEnv == 'Abort') {
+                    if (inputOperation.inputOperation == 'Abort') {
                         currentBuild.result = 'ABORTED'
                         error("Build has been aborted by @${inputOperation.submitter}")
                     }
