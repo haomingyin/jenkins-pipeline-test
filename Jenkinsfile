@@ -22,7 +22,7 @@ pipeline {
 
                     try {
                         timeout (time: 15, unit: 'MINUTES') { 
-                            inputEnv = hubotApprove message: 'Which environment do you want to apply to?', ok: "Proceed", id: "input-env", submitterParameter: 'submitter',
+                            inputEnv = hubotApprove message: 'Which environment do you want to apply to?', ok: "Proceed", id: "InputEnv", submitterParameter: 'submitter',
                             parameters: [
                                     choice(name: 'inputEnv', choices: 'test\nuat\nprod\nAbort', description: "'test', 'uat' or 'prod'")
                                 ]  
@@ -39,7 +39,7 @@ pipeline {
 
                     try {
                         timeout (time: 15, unit: 'MINUTES') {
-                            inputOperation = hubotApprove message: 'Do you want to deploy or destroy a stack?', ok: 'Proceed', id: 'input-operation', submitterParameter: 'submitter',
+                            inputOperation = hubotApprove message: 'Do you want to deploy or destroy a stack?', ok: 'Proceed', id: 'InputOperation', submitterParameter: 'submitter',
                             parameters: [
                                 choice(name: 'inputOperation', choices: 'Deploy\nDestroy\nAbort', description: 'deploy a new stack, or destroy an existed stack')
                             ]
