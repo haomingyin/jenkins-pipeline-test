@@ -3,10 +3,10 @@ def inputOperation = ""
 
 pipeline {
     agent {
-        label 'master'
+        label 'pi'
     }
     environment {
-       VERSION = '1.0.3'
+       VERSION = '1.0.4'
        HUBOT_DEFAULT_ROOM = 'jenkins'
     }
     stages {
